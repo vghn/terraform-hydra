@@ -3,7 +3,7 @@ terraform {
   backend "remote" {
     organization = "vgh"
     workspaces {
-      name = "hydra"
+      name = "Hydra"
     }
   }
 }
