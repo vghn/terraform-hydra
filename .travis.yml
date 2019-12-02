@@ -1,0 +1,26 @@
+dist: bionic
+env:
+  TF_VERSION: '0.12.16'
+install:
+  - |
+    curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+    unzip -d ~/bin terraform.zip
+    terraform version
+before_script: |
+  if [[ "$TRAVIS_BRANCH" == master && "$TRAVIS_PULL_REQUEST" == false ]]; then
+    gpg --decrypt --passphrase "$AWS_SECRET_ACCESS_KEY" --batch --yes --output terraform.tfvars terraform.tfvars.gpg
+    echo "credentials \"app.terraform.io\" { token = \"${TF_TOKEN}\" }" > ~/.terraformrc
+    chmod 600 ~/.terraformrc
+  fi
+script: |
+  if [[ "$TRAVIS_BRANCH" == master && "$TRAVIS_PULL_REQUEST" == false ]]; then
+    terraform init
+    terraform validate
+    terraform plan
+    terraform apply -auto-approve
+  fi
+notifications:
+  webhooks:
+    urls: https://qf0d5qh12f.execute-api.us-east-1.amazonaws.com/prod/travis
+  slack:
+    secure: xn6dlrKjuPJ9yLaFWBGG33vvL3Y5eNFRnLEkBe5bRZPpQ3aLTk6HZ142troCyGJRJs5lU3FHzfOI21aSm+ut04HLkjIrzgDi8lZ90Mzrv4GGLD4ba1cOhfc2ZQf4vUGI3s+uvdigqhy4IlUgjk91EEF9c865Suv0uaZA1Shy4fZmJ8BQ2caUJmO7MXUkGRclWqId5/G+EZkntn0Qti3Ygwn5BenIxXUInUtSa0LAG/lb2m8wzNStpcijewrSWUYVfw8NSG+Z4+cfyxKe94A2lBihi4qnJqBmrH46MQj8pbfOaGLx5SqKmlTI4QsEJFkfXoPsre0kC9SxPvd8bRPspRq2WHBP9nRF/8ZYxEIpmzB9dTQ1tEFVRhzSFUoqfc0v7uFsTGfF6bDDNtOSv9xNdeduSIbxk0itB1rKwCvU3YnYwp9twAT3Mo3QQxjMrM9K67PAp6uBNpKfrttM5cwIWw3QDBEGl85BRlWlGf9IHmkSL1pyRsbq56woE6K6GV//9Bo1+zQHD5CE9B2vXqdkvCGEJnnOVH4khc9JoNSG5WAVnQsGG78XcL1qVSDAM51bF+vZ+VKn22M2WIjDARXMBUSuyQPXguyAFi+vsGif+Xotw7hw3BxfHB6FuWd7FMg5P6arZtiR8QSA1jwW48WcT6bfcqDaNMnZYbQ0wlWgyQ8=

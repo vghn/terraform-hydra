@@ -1,0 +1,13 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!/terraform/backend/terraform.tfstate
+
+# Lambda archives
+*-lambda.zip
+
+# Other
+tmp/
