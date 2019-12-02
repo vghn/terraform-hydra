@@ -1,7 +1,5 @@
 # VGH Hydra Terraform
 
-  [![Build Status](https://travis-ci.com/vghn/terraform.svg?branch=master)](https://travis-ci.com/vghn/terraform-hydra)
-
 ## Overview
 
 Vlad's Hydra Terraform Resources
