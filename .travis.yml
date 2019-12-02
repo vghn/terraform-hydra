@@ -8,7 +8,7 @@ install:
     terraform version
 before_script: |
   if [[ "$TRAVIS_BRANCH" == master && "$TRAVIS_PULL_REQUEST" == false ]]; then
-    gpg --decrypt --passphrase "$AWS_SECRET_ACCESS_KEY" --batch --yes --output terraform.tfvars terraform.tfvars.gpg
+    gpg --decrypt --passphrase "$AWS_SECRET_ACCESS_KEY" --batch --yes --output secrets.auto.tfvars secrets.auto.tfvars.gpg
     echo "credentials \"app.terraform.io\" { token = \"${TF_TOKEN}\" }" > ~/.terraformrc
     chmod 600 ~/.terraformrc
   fi
