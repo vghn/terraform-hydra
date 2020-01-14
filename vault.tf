@@ -132,7 +132,7 @@ resource "aws_security_group_rule" "vault_server" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "vault_ssh" {
+resource "aws_security_group_rule" "vault_monitoring" {
   type              = "ingress"
   from_port         = 9100
   to_port           = 9100
