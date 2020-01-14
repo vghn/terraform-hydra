@@ -132,6 +132,15 @@ resource "aws_security_group_rule" "vault_server" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "vault_ssh" {
+  type              = "ingress"
+  from_port         = 9100
+  to_port           = 9100
+  protocol          = "tcp"
+  security_group_id = aws_security_group.vault.id
+  cidr_blocks       = ["${var.monitoring_ip}/32"]
+}
+
 resource "aws_security_group_rule" "vault_self" {
   type                     = "ingress"
   from_port                = 0

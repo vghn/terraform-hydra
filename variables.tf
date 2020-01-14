@@ -2,6 +2,10 @@ variable "email" {
   description = "Notifications email"
 }
 
+variable "monitoring_ip" {
+  description = "Monitoring IP Address"
+}
+
 variable "cloudflare_email" {
   description = "CloudFlare EMail"
 }
