@@ -327,6 +327,9 @@ export DEBIAN_FRONTEND=noninteractive
 while ! apt-get -y update; do sleep 1; done
 sudo apt-get -q -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' --allow-remove-essential upgrade
 
+echo 'Set hostname'
+sudo hostnamectl set-hostname vault.ghn.me
+
 echo 'Download LetsEncrypt certificates'
 sudo aws s3 sync --delete --sse aws:kms s3://${aws_s3_bucket.vault.id}/acme/ca /root/.acme.sh/ca || true
 sudo aws s3 sync --delete --sse aws:kms s3://${aws_s3_bucket.vault.id}/acme/vault.ghn.me /root/.acme.sh/vault.ghn.me || true
